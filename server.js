@@ -47,10 +47,19 @@ app.post("/addItem", (req, res) => {
     .then(res.redirect("/"));
 });
 
-app.post("/completeItem", (req, res) => {
-  todo.update({});
+app.post("/:id", (req, res) => {
+  let todoId = req.params.id;
+  todo.findOne({ where: { id: todoId } }).then(todo => {
+    todo.update({ complete: true }).then(() => {
+      res.redirect("/");
+    });
+  });
+});
 
-  res.redirect("/");
+app.post("/clear", (req, res) => {
+  todo.destroy({ where: { complete: true } }).then(() => {
+    res.redirect("/");
+  });
 });
 
 app.listen(port, () => {

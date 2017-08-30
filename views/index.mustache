@@ -20,22 +20,26 @@
         <div class="container">
             {{#todos}}
             <div class="returnItem">
-                <form action="/completeItem" method="post">
-                    <button class="button" type="submit" name="removeItem" value="{{name}}"> Mark Complete </button>
+                <form action="{{id}}" method="post">
+                    <button class="button" type="submit" name="removeItem" value="{{id}}"> Mark Complete </button>
                     <span class="todoItem">{{name}}</span>
                 </form>
             </div>
             {{/todos}}
         </div>
 
-        <div class="completed">
-            <h1>Completed</h1>
-            {{#complete}}
-            <div class="complete">
-                {{todo}}
-            </div>
-            {{/complete}}
+        <div class="completed"> >
+            <h1>Completed</h1> <span><form action="/clear"><span><button type="submit">Clear Completed</button></span></form>
+            </span
+                {{#complete}} <div class="complete">
+            {{name}}
         </div>
+        {{/complete}}
+        </div>
+
+
+
+
     </section>
 
 </body>
