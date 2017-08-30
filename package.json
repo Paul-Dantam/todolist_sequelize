@@ -1,0 +1,28 @@
+{
+  "name": "dailyproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Paul-Dantam/todo_list.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Paul-Dantam/todo_list/issues"
+  },
+  "homepage": "https://github.com/Paul-Dantam/todo_list#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "express-validator": "^3.2.1",
+    "fs": "0.0.1-security",
+    "mustache-express": "^1.2.5",
+    "path": "^0.12.7"
+  }
+}
