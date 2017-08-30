@@ -4,6 +4,9 @@ const bodyParser = require("body-parser");
 const mustacheExpress = require("mustache-express");
 const path = require("path");
 const fs = require("fs");
+
+const models = require("./models");
+
 const port = process.env.PORT || 8000;
 
 const app = express();
@@ -16,26 +19,37 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator());
 
-let todos = [{ todo: "Clean chicken coop" }, { todo: "Feed the Dog" }];
-let completed = [];
+const todo = models.todo;
+let data = {};
 
 app.get("/", (req, res) => {
-  res.render("index", { todos: todos, completed: completed });
+  todo
+    .findAll({ where: { complete: false } })
+    .then(todos => {
+      data.todos = todos;
+    })
+    .then(() => {
+      todo.findAll({ where: { complete: true } }).then(complete => {
+        data.complete = complete;
+        res.render("index", data);
+      });
+    });
 });
 
 app.post("/addItem", (req, res) => {
-  todos.push(req.body);
-  res.redirect("/");
+  console.log(req.body.name);
+  todo
+    .build({
+      name: req.body.name,
+      complete: false
+    })
+    .save()
+    .then(res.redirect("/"));
 });
 
 app.post("/completeItem", (req, res) => {
-  todos.forEach((item, index) => {
-    if (req.body.removeItem == todos[index].todo) {
-      let addItem = todos[index];
-      todos.splice(index, 1);
-      completed.push(addItem);
-    }
-  });
+  todo.update({});
+
   res.redirect("/");
 });
 
