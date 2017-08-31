@@ -1,10 +1,7 @@
 const express = require("express");
 const todoRoutes = express.Router();
-
 const models = require("../models");
-
 const todo = models.todo;
-
 let data = {};
 
 todoRoutes.post("/edit/:id", (req, res) => {

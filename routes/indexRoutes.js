@@ -25,7 +25,6 @@ indexRoutes.get("/", (req, res) => {
 });
 
 indexRoutes.post("/addItem", (req, res) => {
-  console.log(req.body.name);
   todo
     .build({
       name: req.body.name,
