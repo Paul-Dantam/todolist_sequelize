@@ -22,23 +22,22 @@
             <div class="returnItem">
                 <form action="{{id}}" method="post">
                     <button class="button" type="submit" name="removeItem" value="{{id}}"> Mark Complete </button>
-                    <span class="todoItem">{{name}}</span>
+                    <input class="todoItem" type="text" name="name" placeholder="{{name}}" />
+                    <button class="button" type="submit" formaction="/todo/edit/{{id}}" name="editItem" value="{{id}}"> Edit Item </button>
                 </form>
             </div>
             {{/todos}}
         </div>
 
-        <div class="completed"> >
-            <h1>Completed</h1> <span><form action="/clear"><span><button type="submit">Clear Completed</button></span></form>
-            </span
-                {{#complete}} <div class="complete">
-            {{name}}
+        <div class="completed">
+            <h1>Completed</h1> <span><form action="/todo/clear" method ="POST"><span><button type="submit">Clear Completed</button></span></form>
+            </span {{#complete}}>
+
+            <div class="complete">
+                {{name}}
+            </div>
+            {{/complete}}
         </div>
-        {{/complete}}
-        </div>
-
-
-
 
     </section>
 

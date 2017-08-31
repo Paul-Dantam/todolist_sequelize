@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator());
 
 const todo = models.todo;
+
 let data = {};
 
 app.get("/", (req, res) => {
@@ -56,7 +57,16 @@ app.post("/:id", (req, res) => {
   });
 });
 
-app.post("/clear", (req, res) => {
+app.post("/todo/edit/:id", (req, res) => {
+  let todoId = req.params.id;
+  todo.findOne({ where: { id: todoId } }).then(todo => {
+    todo.update({ name: req.body.name }).then(() => {
+      res.redirect("/");
+    });
+  });
+});
+
+app.post("/todo/clear", (req, res) => {
   todo.destroy({ where: { complete: true } }).then(() => {
     res.redirect("/");
   });
