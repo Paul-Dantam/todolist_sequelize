@@ -25,7 +25,10 @@ let data = {};
 
 app.get("/", (req, res) => {
   todo
-    .findAll({ where: { complete: false } })
+    .findAll({
+      where: { complete: false },
+      order: [["createdAt", "desc"]]
+    })
     .then(todos => {
       data.todos = todos;
     })
@@ -61,6 +64,15 @@ app.post("/todo/edit/:id", (req, res) => {
   let todoId = req.params.id;
   todo.findOne({ where: { id: todoId } }).then(todo => {
     todo.update({ name: req.body.name }).then(() => {
+      res.redirect("/");
+    });
+  });
+});
+
+app.post("/todo/delete/:id", (req, res) => {
+  let todoId = req.params.id;
+  todo.findOne({ where: { id: todoId } }).then(todo => {
+    todo.destroy({ name: req.body.name }).then(() => {
       res.redirect("/");
     });
   });
