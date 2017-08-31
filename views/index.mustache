@@ -13,27 +13,34 @@
 
     <section class="wrapper">
         <form class="inputArea" action="/addItem" method="post">
-            <input class="input" name="todo" type="text" />
+            <input class="input" name="name" type="text" />
             <button class="button" type="submit">Add todo</button>
         </form>
 
         <div class="container">
-            {{#todos}}
-            <div class="returnItem">
-                <form action="/completeItem" method="post">
-                    <button class="button" type="submit" name="removeItem" value="{{todo}}"> Mark Complete </button> <span class="todoItem">{{todo}}</span>
-                </form>
+            <div class="incomplete">
+                <h1>Incomplete</h1>
+                {{#todos}}
+                <div class="returnItem">
+                    <form action="{{id}}" method="post">
+                        <button class="button" type="submit" name="removeItem" value="{{id}}"> Mark Complete </button>
+                        <input class="todoItem" type="text" value="{{name}}" name="name" placeholder="{{name}}" />
+                        <button class="button" type="submit" formaction="/todo/edit/{{id}}" name="editItem" value="{{id}}"> Edit </button>
+                        <button class="button" type="submit" formaction="/todo/delete/{{id}}" name="editItem" value="{{id}}"> Delete </button>
+                    </form>
+                </div>
+                {{/todos}}
             </div>
-            {{/todos}}
-        </div>
 
-        <div class="completed">
-            <h1>Completed</h1>
-            {{#completed}}
-            <div class="complete">
-                {{todo}}
+            <div class="completed">
+                <h1>Completed</h1> <span><form action="/todo/clear" method ="POST"><span><button class ="clearButton" type="submit">Clear Completed</button></span></form>
+                </span>
+                {{#complete}}
+                <div class="complete">
+                    {{name}}
+                </div>
+                {{/complete}}
             </div>
-            {{/completed}}
         </div>
     </section>
 
