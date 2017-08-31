@@ -5,6 +5,9 @@ const mustacheExpress = require("mustache-express");
 const path = require("path");
 const fs = require("fs");
 
+const indexRoutes = require("./routes/indexRoutes");
+const todoRoutes = require("./routes/todoRoutes");
+
 const models = require("./models");
 
 const port = process.env.PORT || 8000;
@@ -19,70 +22,12 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator());
 
+app.use("/", indexRoutes);
+app.use("/todo", todoRoutes);
+
 const todo = models.todo;
 
 let data = {};
-
-app.get("/", (req, res) => {
-  todo
-    .findAll({
-      where: { complete: false },
-      order: [["createdAt", "desc"]]
-    })
-    .then(todos => {
-      data.todos = todos;
-    })
-    .then(() => {
-      todo.findAll({ where: { complete: true } }).then(complete => {
-        data.complete = complete;
-        res.render("index", data);
-      });
-    });
-});
-
-app.post("/addItem", (req, res) => {
-  console.log(req.body.name);
-  todo
-    .build({
-      name: req.body.name,
-      complete: false
-    })
-    .save()
-    .then(res.redirect("/"));
-});
-
-app.post("/:id", (req, res) => {
-  let todoId = req.params.id;
-  todo.findOne({ where: { id: todoId } }).then(todo => {
-    todo.update({ complete: true }).then(() => {
-      res.redirect("/");
-    });
-  });
-});
-
-app.post("/todo/edit/:id", (req, res) => {
-  let todoId = req.params.id;
-  todo.findOne({ where: { id: todoId } }).then(todo => {
-    todo.update({ name: req.body.name }).then(() => {
-      res.redirect("/");
-    });
-  });
-});
-
-app.post("/todo/delete/:id", (req, res) => {
-  let todoId = req.params.id;
-  todo.findOne({ where: { id: todoId } }).then(todo => {
-    todo.destroy({ name: req.body.name }).then(() => {
-      res.redirect("/");
-    });
-  });
-});
-
-app.post("/todo/clear", (req, res) => {
-  todo.destroy({ where: { complete: true } }).then(() => {
-    res.redirect("/");
-  });
-});
 
 app.listen(port, () => {
   console.log(`server is running on port ${port}`);
